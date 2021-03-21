@@ -86,7 +86,7 @@ class ProdutoController {
     } catch (e) {
       return res
         .status(400)
-        .json({ error: 'Houve um erro ao listar um produto.' });
+        .json({ error: 'Houve um erro ao deletar um produto.' });
     }
   }
 }
