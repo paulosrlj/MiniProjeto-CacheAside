@@ -1,5 +1,11 @@
 import Produto from '../models/Produto';
 
+const redis = require('redis');
+const client = redis.createClient({
+  host: process.env.REDIS_HOST,
+  port: process.env.REDIS_PORT
+});
+
 class ProdutoController {
   async index(req, res) {
     try {
@@ -25,11 +31,16 @@ class ProdutoController {
     try {
       const { id } = req.params;
       if (!id) return res.status(400).json({ error: 'O id não foi informado' });
-
-      const produto = await Produto.findByPk(id, {
-        attributes: ['id', 'nome', ['preco', 'preço']],
+      client.get(id, async function(err,reply){
+        if (reply != null){
+          const produto = JSON.parse(reply.toString());
+        }
+        else {
+          const produto = await Produto.findByPk(id, {
+            attributes: ['id', 'nome', ['preco', 'preço']],
+          });
+        }
       });
-
       if (!produto)
         return res.status(400).json({ error: 'O produto não existe' });
 
@@ -44,12 +55,9 @@ class ProdutoController {
   async store(req, res) {
     try {
       const produto = await Produto.create(req.body);
-
       return res.status(200).json(produto);
     } catch (e) {
-      return res
-        .status(400)
-        .json({ error: 'Houve um erro ao criar um produto.' });
+      throw new Error(e);
     }
   }
 
