@@ -1,10 +1,5 @@
 import Produto from '../models/Produto';
-
-const redis = require('redis');
-const client = redis.createClient({
-  host: process.env.REDIS_HOST,
-  port: process.env.REDIS_PORT
-});
+import redisClient from '../database/index';
 
 class ProdutoController {
   async index(req, res) {
@@ -27,28 +22,28 @@ class ProdutoController {
     }
   }
 
+  // eslint-disable-next-line consistent-return
   async show(req, res) {
     try {
       const { id } = req.params;
       if (!id) return res.status(400).json({ error: 'O id não foi informado' });
-      client.get(id, async function(err,reply){
-        if (reply != null){
+      redisClient.get(id, async (err, reply) => {
+        if (reply != null) {
           const produto = JSON.parse(reply.toString());
+          return res.status(200).json(produto);
         }
-        else {
-          const produto = await Produto.findByPk(id, {
-            attributes: ['id', 'nome', ['preco', 'preço']],
-          });
-        }
-      });
-      if (!produto)
-        return res.status(400).json({ error: 'O produto não existe' });
+        const produto = await Produto.findByPk(id, {
+          attributes: ['id', 'nome', ['preco', 'preço']],
+        });
+        if (!produto)
+          return res.status(400).json({ error: 'O produto não existe' });
 
-      return res.status(200).json(produto);
+        return res.status(200).json(produto);
+      });
     } catch (e) {
       return res
         .status(400)
-        .json({ error: 'Houve um erro ao listar um produto.' });
+        .json({ error: 'Houve um erro ao exibir um produto.' });
     }
   }
 
@@ -57,7 +52,9 @@ class ProdutoController {
       const produto = await Produto.create(req.body);
       return res.status(200).json(produto);
     } catch (e) {
-      throw new Error(e);
+      return res
+        .status(400)
+        .json({ error: 'Houve um erro ao criar um produto.' });
     }
   }
 

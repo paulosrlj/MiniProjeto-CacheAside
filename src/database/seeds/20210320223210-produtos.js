@@ -5,7 +5,7 @@ module.exports = {
       [
         {
           nome: 'PS5',
-          preco: 6666,
+          preco: 4199,
         },
         {
           nome: 'Lençol 150x200',
@@ -13,7 +13,7 @@ module.exports = {
         },
         {
           nome: 'Cadeira Gamer',
-          preco: 2000,
+          preco: 2150.22,
         },
         {
           nome: 'Mousepad',
@@ -29,11 +29,11 @@ module.exports = {
         },
         {
           nome: 'Notebook Dell i9 16GB RAM 2TB',
-          preco: 6666,
+          preco: 6200.5,
         },
         {
           nome: 'Xbox 360',
-          preco: 5656,
+          preco: 4099.22,
         },
         {
           nome: 'Teclado gamer RGB',
@@ -41,7 +41,7 @@ module.exports = {
         },
         {
           nome: 'Garrafa de água 500ml',
-          preco: 30,
+          preco: 3.5,
         },
       ],
       {}
