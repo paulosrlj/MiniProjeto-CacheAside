@@ -16,18 +16,4 @@ const redisClient = redis.createClient({
   port: process.env.REDIS_PORT,
 });
 
-(async function setRedis() {
-  try {
-    const pgProduto = await Produto.findAll();
-    for (let i = 0; i < pgProduto.length; i += 1) {
-      const { id, nome, preco } = pgProduto[i];
-      const dados = { nome, preco };
-
-      redisClient.setex(id, 3600, JSON.stringify(dados));
-    }
-  } catch (e) {
-    throw new Error(e);
-  }
-})();
-
 export default redisClient;

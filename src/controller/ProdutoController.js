@@ -33,10 +33,16 @@ class ProdutoController {
           return res.status(200).json(produto);
         }
         const produto = await Produto.findByPk(id, {
-          attributes: ['id', 'nome', ['preco', 'preço']],
+          attributes: ['id', 'nome', 'preco'],
         });
         if (!produto)
           return res.status(400).json({ error: 'O produto não existe' });
+
+        // Setar o produto no cache do Redis
+        const { id: produtoId, nome, preco } = produto;
+        const dados = { produtoId, nome, preco };
+
+        redisClient.setex(produtoId, 3600, JSON.stringify(dados));
 
         return res.status(200).json(produto);
       });
