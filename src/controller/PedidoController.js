@@ -27,12 +27,13 @@ class PedidoController {
         const produto = await Produto.findByPk(prod[0]);
         const { id, nome, preco } = produto;
 
-        return [id, nome, preco * prod[1]];
+        return { id, nome, preco: preco * prod[1] };
       });
 
       const infoProdutos = await Promise.all(promisesProdutos);
 
-      const valorTotal = infoProdutos.reduce((acc, cur) => acc + cur[2], 0);
+      // [{nome: 'asda', preco: 22}]
+      const valorTotal = infoProdutos.reduce((acc, cur) => acc + cur.preco, 0);
 
       const pedido = Pedido({
         produtos: infoProdutos,
