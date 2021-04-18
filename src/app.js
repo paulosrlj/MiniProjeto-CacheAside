@@ -3,10 +3,10 @@ require('dotenv').config();
 import express from 'express';
 
 import './database';
-import './controller/mongo';
 
 // Rotas
 import produtoRotas from './routes/produto';
+import clienteRotas from './routes/cliente';
 
 class App {
   constructor() {
@@ -22,6 +22,7 @@ class App {
 
   routes() {
     this.app.use('/produto', produtoRotas);
+    this.app.use('/cliente', clienteRotas);
   }
 }
 

@@ -1,12 +1,29 @@
-import ProdutoController from './ProdutoController';
-
 require('dotenv').config();
-const { MongoClient } = require('mongodb');
 
-const client = new MongoClient(
-  `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}`,
-  { useUnifiedTopology: true }
-);
+const mongoose = require('mongoose');
+
+(async function connectMongo() {
+  try {
+    await mongoose.connect(
+      `mongodb://${process.env.MONGO_HOST}:${process.env.MONGO_PORT}/${process.env.MONGO_DATABASE}`,
+      {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      }
+    );
+  } catch (error) {
+    console.log(error);
+  }
+})();
+
+const db = mongoose.connection;
+
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', () => {
+  console.log('Conectado');
+});
+
+export default mongoose;
 
 // // async function getPessoas() {
 // //   try {
@@ -37,12 +54,12 @@ const client = new MongoClient(
 // }
 
 // eslint-disable-next-line no-unused-vars
-const lulu = {
-  nome: 'lulu',
-  idade: 20,
-  cpf: 11111111111,
-  email: 'lulu@gmail.com',
-};
+// const lulu = {
+//   nome: 'lulu',
+//   idade: 20,
+//   cpf: 11111111111,
+//   email: 'lulu@gmail.com',
+// };
 // addPessoa(lulu);
 
 // // async function updatePessoa() {
@@ -85,30 +102,30 @@ const lulu = {
 
 // const mongoose = require('mongoose');
 
-async function addPedido(obj) {
-  try {
-    await client.connect();
-    const pedido = client
-      .db(`${process.env.MONGO_DATABASE}`)
-      .collection('Pedidos');
+// async function addPedido(obj) {
+//   try {
+//     await client.connect();
+//     const pedido = client
+//       .db(`${process.env.MONGO_DATABASE}`)
+//       .collection('Pedidos');
 
-    await pedido.insertOne(obj).then(() => {
-      console.log('Inserido');
-    });
-  } finally {
-    await client.close();
-  }
-}
-const produto = {};
+//     await pedido.insertOne(obj).then(() => {
+//       console.log('Inserido');
+//     });
+//   } finally {
+//     await client.close();
+//   }
+// }
+// const produto = {};
 
-const quantidade = 5;
+// const quantidade = 5;
 
-const valorTotal = quantidade * produto.preco;
+// const valorTotal = quantidade * produto.preco;
 
-const pedido = {
-  lulu,
-  produto,
-  quantidade,
-  valorTotal,
-};
-addPedido(pedido);
+// const pedido = {
+//   lulu,
+//   produto,
+//   quantidade,
+//   valorTotal,
+// };
+// addPedido(pedido);

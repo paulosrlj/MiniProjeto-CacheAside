@@ -14,5 +14,6 @@ module.exports = {
     'import/first': 0,
     'class-methods-use-this': 0,
     'no-param-reassign': 0,
+    'consistent-return': 0,
   },
 };
