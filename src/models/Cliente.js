@@ -4,7 +4,11 @@ const clienteSchema = new mongoose.Schema({
   nome: String,
   idade: Number,
   cpf: String,
-  email: String,
+  email: {
+    type: String,
+    unique: true,
+  },
+  senha: String,
 });
 
 const Cliente = mongoose.model('Cliente', clienteSchema);

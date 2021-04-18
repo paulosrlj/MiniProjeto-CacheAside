@@ -7,6 +7,7 @@ import './database';
 // Rotas
 import produtoRotas from './routes/produto';
 import clienteRotas from './routes/cliente';
+import pedidoRotas from './routes/pedido';
 
 class App {
   constructor() {
@@ -23,6 +24,7 @@ class App {
   routes() {
     this.app.use('/produto', produtoRotas);
     this.app.use('/cliente', clienteRotas);
+    this.app.use('/pedido', pedidoRotas);
   }
 }
 

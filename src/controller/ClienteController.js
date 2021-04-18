@@ -41,7 +41,9 @@ class ClienteController {
 
       await Cliente.findByIdAndUpdate(id, req.body, (err) => {
         if (err) return res.status(400).json(err);
-        return res.status(200).json();
+        return res
+          .status(200)
+          .json({ success: 'Cliente atualizado com sucesso' });
       });
     } catch (e) {
       return res.status(400).json({ err: 'Ops, algo deu errado' });
